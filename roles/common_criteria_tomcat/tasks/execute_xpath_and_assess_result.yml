@@ -20,7 +20,7 @@
 - set_fact:
     expected_count: "{{ item.count | default('0') | int }}"
 
-- debug: 
+- debug:
     msg: "{{ res }} (expected_count: {{ expected_count }})"
   when:
     - res is defined
