@@ -24,6 +24,8 @@
       archive_url: "https://downloads.apache.org/tomcat/tomcat-9/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.zip"
       shutdown:
         port: "-1"
+  collections:
+    - community.general
   roles:
     - tomcat
     - common_criteria_tomcat

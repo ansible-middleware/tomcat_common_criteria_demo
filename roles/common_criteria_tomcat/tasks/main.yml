@@ -32,32 +32,31 @@
 - name: "Checks server's configuration"
   include_tasks: tasks/execute_xpath_and_assess_result.yml
   loop:
-    - { xpath: "//Connector[not(@allowTrace)or(@allowTrace='true')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector SHOULD set allowTrace attribute to 'false'", success: "Trace settings are in compliance with Common Criteria recommendations" }
-    - { xpath: "//Server[not(@port)or(port=8005)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Shutdown port should be randomized", success: "Shutdown port has been randomized." }
-    - { xpath: "//Connector[not(@SSLEnabled)or(@SSLEnabled=false)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connectors are not all using SSL", success: "Connectors are all using SSL" }
-    - { xpath: "//Connector[not(@scheme)or(@scheme=http)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "The Connector scheme attribute SHOULD be defined and set to 'https'", success: "Connecter's schemes are in compliance with Common Criteria recommendatins." }
-    - { xpath: "//Connector[not(@sslProtocol)or(@sslProtocol!='TLS')and(@SSLEnabled=true)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "If SSL protocols is enabled, associated attribute should be set to TLS'", success: "Connectors SSL protocol configuration are in compliance with Common Criteria recommendations." }
-    - { xpath: "//security-constraint/user-data-constraint/transport-guarantee[text()!='CONFIDENTIAL']", xmlfile: "{{ tomcat.home }}/webapps/manager/WEB-INF/web.xml", error: "Manager webapp SHOULD only be accessed using SSL", success: "Manager webapp access has been properly configured to use SSL." }
-    - { xpath: "//Connector[not(@xpoweredBy)or(@xpoweredBy=false)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "A used Connector has NOT the xpoweredBy attribute set to false", success: "No Connectors uses xpoweredBy" }
-    - { xpath: "//Connector[not(@server)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector needs to have the server attribute defined to remove default server header", success: "All Connectors have customized server header." }
-    - { xpath: "//Connector[not(@clientAuth)or(@clientAuth='true')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
-    - { xpath: "//Connector[not(@certificateVerification)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
-    #    - { xpath: "//Connector[@certificateVerification!=required]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
-    - { xpath: "//Realm[(@className='org.apache.catalina.realm.UserDatabaseRealm')or(@className='org.apache.catalina.realm.MemoryRealm')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Realms used are not safe.", success: "All Realms are valid." }
-    - { xpath: "//Host[not(@autoDeploy)or(@autoDeploy='true')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
-    - { xpath: "//Connector[not(@connectionTimeout)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector connection's timeout must be set", success: "All Connectors connection's timeout are properly set." }
-    - { xpath: "//Connector[not(@maxHttpHeaderSize)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector maxHttpHeaderSize must be set", success: "All Connectors maxHttpHeaderSize are properly set." }
+    - { name: "AllowTrace", xpath: "//Connector[not(@allowTrace)or(@allowTrace='true')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector SHOULD set allowTrace attribute to 'false'", success: "Trace settings are in compliance with Common Criteria recommendations" }
+    - { name: "Port", xpath: "//Server[not(@port)or(port=8005)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Shutdown port should be randomized", success: "Shutdown port has been randomized." }
+    - { name: "SSLEnabled", xpath: "//Connector[not(@SSLEnabled)or(@SSLEnabled=false)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connectors are not all using SSL", success: "Connectors are all using SSL" }
+    - { name: "HttpScheme", xpath: "//Connector[not(@scheme)or(@scheme=http)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "The Connector scheme attribute SHOULD be defined and set to 'https'", success: "Connecter's schemes are in compliance with Common Criteria recommendatins." }
+    - { name: "TLS", xpath: "//Connector[not(@sslProtocol)or(@sslProtocol!='TLS')and(@SSLEnabled=true)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "If SSL protocols is enabled, associated attribute should be set to TLS'", success: "Connectors SSL protocol configuration are in compliance with Common Criteria recommendations." }
+    - { name: "ManagerWebappWithSSL", xpath: "//security-constraint/user-data-constraint/transport-guarantee[text()!='CONFIDENTIAL']", xmlfile: "{{ tomcat.home }}/webapps/manager/WEB-INF/web.xml", error: "Manager webapp SHOULD only be accessed using SSL", success: "Manager webapp access has been properly configured to use SSL." }
+    - { name: "XPoweredBy", xpath: "//Connector[not(@xpoweredBy)or(@xpoweredBy=false)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "A used Connector has NOT the xpoweredBy attribute set to false", success: "No Connectors uses xpoweredBy" }
+    - { name: "RemoveDefaultServerHeader", xpath: "//Connector[not(@server)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector needs to have the server attribute defined to remove default server header", success: "All Connectors have customized server header." }
+    - { name: "ConnectorClientAuth" , xpath: "//Connector[not(@clientAuth)or(@clientAuth='false')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
+    - { name: "ClientAuth", xpath: "//Connector[not(@certificateVerification)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
+    - { name: "CertificateVerification", xpath: "//Connector[@certificateVerification!=required]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
+    - { name: "Realms", xpath: "//Realm[(@className='org.apache.catalina.realm.UserDatabaseRealm')or(@className='org.apache.catalina.realm.MemoryRealm')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Realms used are not safe.", success: "All Realms are valid." }
+    - { name: "AutoDeploy", xpath: "//Host[not(@autoDeploy)or(@autoDeploy='true')]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector clientAuth attribute should be set to true", success: "All Connectors clientAuth are properly set." }
+    - { name: "ConnectionTimeout", xpath: "//Connector[not(@connectionTimeout)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector connection's timeout must be set", success: "All Connectors connection's timeout are properly set." }
+    - { name: "HttpHeaderSize", xpath: "//Connector[not(@maxHttpHeaderSize)]", xmlfile: "{{ tomcat.home }}/conf/server.xml", error: "Connector maxHttpHeaderSize must be set", success: "All Connectors maxHttpHeaderSize are properly set." }
 
 - include_tasks: tasks/execute_xpath_and_assess_result.yml
   with_items:
-    - { xpath: "//Listener[@className='org.apache.catalina.core.JreMemoryLeakPreventionListener']", xmlfile: "{{ tomcat.home }}/{{ tomcat.conf.server }}", not_empty_result: true, error: "TODO", success: "TODO" }
+    - { name: 'JreMemoryLeakPreventionListener', xpath: "//Listener[@className='org.apache.catalina.core.JreMemoryLeakPreventionListener']", xmlfile: "{{ tomcat.home }}/{{ tomcat.conf.server }}", count: 1, error: "TODO", success: "TODO" }
 
 - name: "Check that CATALINA_BASE (if defined)."
   include_tasks: tasks/checks_conf_files.yml
   loop:
     - { path: "{{ tomcat.base }}", owner: "{{ tomcat_owner }}", group: "{{ tomcat_group }}", mode: "0750" }
   when: tomcat.base
-
 
 - name: Find locate all context.xml files
   find:
