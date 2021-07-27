@@ -1,10 +1,9 @@
 ---
 
 - name: "Ensures required dependencies are installed"
-  yum:
-    name: "{{ item }}"
-  loop:
-    - perl-XML-XPath
+  include_tasks: fastpackage.yml
+  vars:
+    package_name: 'python3-lxml'
 
 - name: "Checks that root directories are appropriately defined."
   include_tasks: tasks/checks_root_dirs.yml
