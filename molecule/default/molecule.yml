@@ -7,7 +7,7 @@ lint: |
   set -e
   yamllint .
   flake8
-  ansible-lint --force-color
+  ansible-lint --force-color .
 platforms:
   - name: instance
     image: docker.io/centos:7
