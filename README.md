@@ -8,7 +8,7 @@ By default, the installation role will set up Apache Tomcat in the /opt director
 How to run the playbook?
 ----
 
-    $ export CATALINA_HOME=/opt/apache-tomcat-9.0.40/
+    $ export CATALINA_HOME=/opt/apache-tomcat-9.0.50/
     $ ansible-playbook playbook.yml
 
 
