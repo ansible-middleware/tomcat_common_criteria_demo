@@ -16,7 +16,7 @@ provisioner:
   playbooks:
     converge: ../../playbook.yml
   env:
-    CATALINA_HOME: "/opt/apache-tomcat-9.0.40"
+    CATALINA_HOME: "/opt/apache-tomcat-9.0.50"
   inventory:
     host_vars:
       localhost:
